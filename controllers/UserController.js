@@ -22,5 +22,20 @@ module.exports = {
 		} else {
 			return res.status(403).json({ message: "You can modify only your account!" });
 		}
-    }
+    },
+
+    async deleteUser (req, res) {
+    	if (req.body.userId === req.params.id || req.body.isAdmin) {
+		    try {
+			    await User.findByIdAndDelete(req.params.id);
+			    res.status(200).json({ message: "Your account has been deleted successfully!"});
+		    } catch (err) {
+		      	return res.status(500).json(err.message);
+		    }
+		} else {
+			return res.status(403).json("You can delete only your account!");
+		}
+    },
+
+    
 };
