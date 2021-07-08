@@ -1,7 +1,6 @@
 const router = require('express').Router();
+const UserController = require('./../controllers/UserController');
 
-router.get('/', (req, res) => {
-    res.send({ message: 'Wellcome to user routes' });
-})
+router.put('/:id', UserController.updateUser);
 
 module.exports = router;
