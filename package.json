@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "nodemon index.js" 
+    "test": "nodemon index.js"
   },
   "author": "Silas S. da Silva",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
