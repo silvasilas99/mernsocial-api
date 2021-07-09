@@ -10,7 +10,7 @@ module.exports = {
 					req.body.password = await bcrypt.hash(req.body.password, salt);
 				} catch (err) {
 		            return res.status(500).json(err.message);
-		        }
+		        }	
 			}
 
 			try {
@@ -45,5 +45,26 @@ module.exports = {
 		} catch (err) {
 		    return res.status(500).json(err.message);
 		}
-    }
+    },
+
+	async follow (req, res) {
+		 if (req.body.userId !== req.params.id) {
+		    try {
+		      	const user = await User.findById(req.params.id);
+		      	const currentUser = await User.findById(req.body.userId);
+		      	if (!user.followers.includes(req.body.userId)) {
+		       		await user.updateOne({ $push: { followers: req.body.userId } });
+		        	await currentUser.updateOne({ $push: { following: req.params.id } });
+		        	return res.status(200).json({ message: "Now you are following this user" });
+		      	} else {
+		        	return res.status(403).json({ message: "You already following this user" });
+		      	}
+		    } catch (err) {
+		      	res.status(500).json(err);
+		    }
+		} else {
+		    return res.status(403).json({ message: "You can not follow yourself" });
+		}
+    },
+
 };
