@@ -8,6 +8,6 @@ router.get('/:id', PostsController.getSinglePost);
 
 router.put('/:id/like', PostsController.like);
 
-router.get('/timeline/all', PostsController.timeline);
+router.get('/timeline/:userId', PostsController.timeline);
 
 module.exports = router;
