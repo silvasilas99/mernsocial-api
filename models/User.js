@@ -55,7 +55,11 @@ const UserSchema = mongoose.Schema(
         relationship: {
             type: Number,
             enum: [1, 2, 3]
-        }
+        },
+        posts: [{ 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Post',
+        }],
     },  
     { timestamps: true }
 );
