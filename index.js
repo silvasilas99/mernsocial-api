@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -10,14 +11,20 @@ const postsRoute = require('./routes/posts');
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
-    console.log('Connected to MongoDB sucessfully');
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true, 
+    useCreateIndex: true,
+    useUnifiedTopology: true, 
+    useFindAndModify: false
+}, () => {
+console.log('Connected to MongoDB sucessfully');
 });
 
 // Middlewares
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('common'));
+app.use(cors());
 
 app.use('/api/user/', userRoute);
 app.use('/api/auth/', authRoute);
