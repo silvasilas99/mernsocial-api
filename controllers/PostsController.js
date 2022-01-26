@@ -68,14 +68,23 @@ module.exports = {
     async timeline (req, res) {
     	try {
     		const currentUser = await User.findById(req.params.userId);
-    		const userPosts = await Post.find({ userId: currentUser._id });
+    		const userPosts = await Post
+				.find({ user: currentUser._id })
+				.populate({ 
+					path: 'user', 
+					select: 'username email profilePicture' 
+				});
     		const friendPosts = await Promise.all(
       			currentUser.following.map((friendId) => {
-        		return Post.find({ userId: friendId });
-      		})
-    	);
-    res.json(userPosts.concat(...friendPosts))
-    		res.json(userPosts.concat(...friendPosts));
+        			return Post
+						.find({ user: friendId })
+						.populate({ 
+							path: 'user', 
+							select: 'username email profilePicture' 
+						});
+				})
+			);
+			return res.status(200).json(userPosts.concat(...friendPosts));
     	} catch (err) {
     		return res.status(500).json(err.message);
   		}
